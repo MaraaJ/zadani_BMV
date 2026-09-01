@@ -1,0 +1,54 @@
+<!DOCTYPE html><html lang="cs"><head><meta charset="utf-8"><title>BMV strategy — mobil 390</title>
+<meta name="design_doc_mode" content="canvas">
+<link rel="icon" href="assets/bmv-favicon.svg">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/tokens/colors.css">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/tokens/typography.css">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/tokens/shape.css">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/tokens/texture.css">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/tokens/base.css">
+<link rel="stylesheet" href="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/styles.css">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/bmv-strategy-design-system-3d75ce48-f59f-428b-b1c5-742580b29de8/_ds_bundle.js"></script>
+<style>
+a{color:var(--link)}a:hover{color:var(--link-hover)}
+.bmv-noise>.bmv-noise-layer{position:absolute;inset:0;z-index:0}
+.m-frame{width:390px;--gutter:20px;--section-y:40px;background:var(--bg)}
+.m-frame img{max-width:100%}
+.m-frame .obj-top img{object-position:top}
+.m-frame .obj-bottom img{object-position:bottom}
+.m-frame .obj-center img{object-position:center 70%}
+.m-frame figure{width:100%}
+.m-frame figure>div{aspect-ratio:3/2!important;width:100%}
+.m-frame figure img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.m-frame .hero-mark{display:none!important}
+.m-frame #uvod{padding-top:var(--s-10)!important}
+.m-frame #uvod h1{font-size:30px!important}
+.m-frame .hero-top{grid-template-columns:1fr!important;gap:var(--s-6)!important;align-items:start!important}
+.m-frame .hero-theses{grid-template-columns:1fr!important;gap:0!important}
+.m-frame .hero-theses p{padding:var(--s-4) 0}
+.m-frame .hero-theses p+p{border-top:1px solid var(--rule)}
+.m-frame .about-grid{grid-template-columns:1fr!important;gap:var(--s-8)!important}
+.m-frame .areas-grid{grid-template-columns:1fr!important}
+.m-frame .partner-row{grid-template-columns:1fr!important;gap:var(--s-6)!important}
+.m-frame .strategy-block{max-width:none!important}
+.m-frame .strategy-block h2{font-size:24px!important;text-align:left!important}
+.m-frame .strategy-cols{grid-template-columns:1fr!important;gap:var(--s-6)!important}
+.m-frame .strategy-left,.m-frame .strategy-left p{width:auto!important;height:auto!important}
+.m-frame .footer-cols{grid-template-columns:1fr!important;gap:var(--s-8)!important}
+.m-label{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+</style></head>
+<body>
+<div style="position:absolute;left:80px;top:80px;width:390px"><p class="m-label">01 — Celá stránka, 390 px</p><div id="root-page"></div></div>
+<div style="position:absolute;left:560px;top:80px;width:390px;height:876px"><p class="m-label">02 — Otevřené menu, 390 × 844 px</p><div id="root-menu"></div></div>
+<script type="text/babel" src="content.jsx"></script>
+<script type="text/babel" src="sections.jsx"></script>
+<script type="text/babel" src="mobile.jsx"></script>
+<script type="text/babel" data-presets="react">
+ReactDOM.createRoot(document.getElementById('root-page')).render(<MobilePage />);
+ReactDOM.createRoot(document.getElementById('root-menu')).render(<MobileMenuFrame />);
+</script>
+</body></html>

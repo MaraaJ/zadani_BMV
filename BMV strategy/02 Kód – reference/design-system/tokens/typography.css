@@ -1,0 +1,22 @@
+/* Stupnice: 12 14 16 20 24 30 32 34 42 48. Nadpisy vždy 400. */
+:root{
+--fs-12:12px;--fs-14:14px;--fs-16:16px;--fs-20:20px;--fs-24:24px;
+--fs-30:30px;--fs-32:32px;--fs-34:34px;--fs-42:42px;--fs-48:48px;
+
+--w-regular:400; /* @kind font */
+--w-logo:600; /* @kind font */
+
+/* hlavní nadpis 48/1,2 */
+--lh-tight:1.2; /* @kind font */
+--lh-heading:1.25; /* @kind font */
+/* perex */
+--lh-lead:1.7; /* @kind font */
+--lh-body:1.6; /* @kind font */
+--lh-mono:1.4; /* @kind font */
+
+--tracking-mono:.08em;
+--tracking-heading:-0.01em;
+
+--measure-lead:520px;   /* max. šířka perexu */
+--measure-body:640px;
+}

@@ -1,0 +1,9 @@
+/* radius 32 na plochách, 39 na pilulkách. Nikdy ostré rohy, nikdy stíny. */
+:root{
+--radius:32px;
+--radius-pill:39px;
+--radius-media:32px;
+--border-w:1px;
+--logo-min-width:120px;
+--logo-clearance:.5em; /* polovina výšky versálky */
+}

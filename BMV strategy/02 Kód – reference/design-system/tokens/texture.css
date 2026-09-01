@@ -1,0 +1,7 @@
+/* Šum — podpis rodiny. Originální assets/noise.png z repa skupiny KUMO.
+   Vždy 126×126 px při opacity 0,5, jako samostatná vrstva (nikoliv pseudo-element,
+   ten se nevykresluje v náhledech a exportech). */
+:root{--noise-url:url('../assets/noise.png'); /* @kind other */ --noise-size:126px; /* @kind spacing */ --noise-opacity:.5 /* @kind other */}
+.bmv-noise{position:relative;isolation:isolate}
+.bmv-noise-layer{position:absolute;inset:0;background-image:var(--noise-url);background-size:var(--noise-size) var(--noise-size);background-repeat:repeat;opacity:var(--noise-opacity);pointer-events:none;border-radius:inherit;z-index:0}
+.bmv-noise>*{position:relative;z-index:1}

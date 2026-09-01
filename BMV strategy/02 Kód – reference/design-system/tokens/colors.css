@@ -1,0 +1,24 @@
+/* Závazná paleta. Nikdy jiné barvy, nikdy gradient. */
+:root{
+--bg:#F4E1D0;
+--green:#1D453E;
+--green-d:#14312C;
+--white:#FFFFFF;
+--muted:#73635B;
+--rule:#E4D2C9;
+
+/* semantické aliasy */
+--surface-page:var(--bg);
+--surface-card:var(--white);
+--surface-dark:var(--green-d);
+--surface-primary:var(--green);
+--text-primary:var(--green);
+--text-secondary:var(--muted);
+--text-on-dark:var(--bg);
+--text-on-dark-muted:#B9A99B;
+--border-rule:var(--rule);
+--border-on-dark:rgba(244,225,208,.18);
+--link:var(--green);
+--link-hover:var(--green-d);
+--link-on-dark:var(--bg);
+}
