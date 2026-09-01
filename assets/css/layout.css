@@ -1,0 +1,615 @@
+/* ==========================================================================
+   BMV strategy — sazba
+   --------------------------------------------------------------------------
+   Hodnoty odměřené z dodané předlohy (bmv-desktop-1440.pdf, 1440 × 5732 px
+   a bmv-mobil-390.pdf). Barvy, velikosti písma, radiusy, gutter i vertikální
+   rytmus se berou výhradně z tokens.css — tento soubor žádnou novou hodnotu
+   ze závazné specifikace nezavádí.
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  /* Vlastní vlastnosti odvozené z palety — nejde o nové barvy, jen o poměry
+     přesně odečtené z předlohy. */
+  --footer-rule: color-mix(in srgb, var(--white) 85%, var(--rule));
+  --header-h: 72px;
+}
+
+body { overflow-x: clip; }
+
+img,
+picture,
+svg { display: block; max-width: 100%; }
+
+ul { margin: 0; padding: 0; list-style: none; }
+
+/* Nic není tučné. Váha 600 je jen v logotypu; zvýraznění nese barva. */
+strong { font-weight: var(--w-regular); }
+
+hr { border: 0; margin: 0; }
+
+/* Pravidlo `.bmv-noise > *` z tokenů přepíše vrstvě šumu i její vlastní
+   `position: absolute`. Referenční export to řeší stejnou opravou. */
+.bmv-noise > .bmv-noise-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.strategy :focus-visible {
+  outline-color: var(--text-on-dark);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--gutter);
+  top: var(--s-2);
+  z-index: 100;
+  padding: var(--s-3) var(--s-5);
+  background: var(--white);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-14);
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform .2s ease;
+}
+
+.skip-link:focus-visible { transform: none; }
+
+/* --- stavební kameny ------------------------------------------------------ */
+
+.wrap {
+  width: 100%;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section,
+.site-footer { scroll-margin-top: var(--header-h); }
+
+.section { padding-block: var(--section-y); }
+
+.section-title {
+  font-size: var(--fs-32);
+  margin-bottom: var(--s-16);
+}
+
+.rule {
+  height: var(--border-w);
+  background: var(--rule);
+}
+
+.lead {
+  font-size: var(--fs-16);
+  line-height: var(--lh-lead);
+  max-width: var(--measure-lead);
+}
+
+.prose {
+  color: var(--text-secondary);
+  line-height: var(--lh-lead);
+}
+
+.prose > p + p { margin-top: var(--s-6); }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  font-weight: var(--w-regular);
+  line-height: var(--lh-mono);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 var(--s-2);
+}
+
+/* --- hlavička ------------------------------------------------------------- */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: var(--border-w) solid var(--rule);
+}
+
+.site-header__inner {
+  width: 100%;
+  max-width: var(--content);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-6);
+}
+
+.site-header__logo {
+  display: block;
+  text-decoration: none;
+  flex: none;
+}
+
+.site-header__logo img { width: 167px; height: auto; }
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--s-10);
+}
+
+.site-nav a,
+.mobile-menu a {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  line-height: var(--lh-mono);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  text-decoration: none;
+  border-bottom: var(--border-w) solid transparent;
+  padding-bottom: 2px;
+  transition: color .2s ease, border-color .2s ease;
+}
+
+.site-nav a:hover,
+.site-nav a[aria-current='true'] { border-bottom-color: currentColor; }
+
+/* Hamburger. Tři linky 1 px s roztečí 7 px, celkem 24 × 15 px — odměřeno
+   z předlohy 390 px. Klikací plocha je zvětšená zápornými okraji, kresba
+   zůstává na místě. */
+.menu-button {
+  display: none;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--green);
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  line-height: var(--lh-mono);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+  cursor: pointer;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  margin-inline-end: -8px;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-button__bars {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 15px;
+  border-top: var(--border-w) solid currentColor;
+}
+
+.menu-button__bars::before,
+.menu-button__bars::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--border-w);
+  background: currentColor;
+}
+
+.menu-button__bars::before { top: 7px; }
+.menu-button__bars::after { top: 14px; }
+
+.menu-button__close { display: none; }
+
+.menu-button:active { color: var(--green-d); }
+
+.menu-button[aria-expanded='true'] .menu-button__bars { display: none; }
+.menu-button[aria-expanded='true'] .menu-button__close { display: block; }
+
+/* --- mobilní menu --------------------------------------------------------- */
+
+/* Celoobrazovkové menu podle rámce 02 mobilní předlohy: hlavička zůstává
+   viditelná, pod ní jsou položky ve stejné sazbě jako nadpisy karet. */
+.mobile-menu {
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  z-index: 40;
+  background: var(--bg);
+  padding: var(--s-5) var(--gutter);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+.mobile-menu[hidden] { display: none; }
+
+.mobile-menu__list {
+  width: 100%;
+  max-width: var(--content);
+  margin-inline: auto;
+}
+
+.mobile-menu__list a {
+  display: block;
+  padding-block: var(--s-3);
+  font-family: var(--font-sans);
+  font-size: var(--fs-24);
+  line-height: var(--lh-heading);
+  letter-spacing: var(--tracking-heading);
+  text-transform: none;
+  text-decoration: none;
+}
+
+/* --- úvod ----------------------------------------------------------------- */
+
+/* Odsazení hero od hlavičky je v předloze 76 px, tedy mimo rytmus sekcí. */
+.hero { padding-top: 76px; }
+
+.hero__top {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-20);
+  align-items: start;
+  padding-bottom: 44px;
+}
+
+/* Užší než sloupec, aby řádky lámaly přesně jako v předloze. */
+.hero__title {
+  font-size: var(--fs-48);
+  line-height: var(--lh-heading);
+  max-width: 592px;
+}
+
+.hero__lead {
+  color: var(--text-secondary);
+  padding-top: var(--s-24);
+  max-width: none;
+}
+
+/* Velké prořezané BMV — plocha s pevnou výškou, písmo přetéká a je oříznuté.
+   Barva je --green v 5,5 % na --bg, tedy odstín z palety, nikoliv nová barva. */
+/* Velké prořezané BMV — dodaná značka, ne přepis do textu (design systém to
+   výslovně zakazuje). Značka je zarovnaná pravým okrajem kresby na obsahovou
+   hranu a plocha ji zdola prořezává. Šířka 59,1 % obsahu odpovídá 780 px
+   při 1440 px, přesah 0,53 % vyrovnává vzduch po pravé straně v SVG. */
+.hero__mark {
+  position: absolute;
+  right: -.53%;
+  top: 14px;
+  width: 59.1%;
+  aspect-ratio: 780 / 238;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero__mark img {
+  width: 100%;
+  height: auto;
+  opacity: .055;
+}
+
+.hero__title,
+.hero__lead { position: relative; z-index: 1; }
+
+.hero__theses {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--s-12);
+  padding-top: var(--s-12);
+}
+
+.hero__theses p {
+  font-size: var(--fs-20);
+  line-height: var(--lh-lead);
+  color: var(--text-secondary);
+}
+
+.hero__theses strong { color: var(--text-primary); }
+
+/* --- o společnosti -------------------------------------------------------- */
+
+.about__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: clamp(var(--s-8), 5.6vw, var(--s-20));
+  align-items: start;
+}
+
+.quote {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  background: var(--surface-dark);
+  color: var(--text-on-dark);
+  border-radius: var(--radius);
+  padding: var(--s-8) var(--s-10);
+  min-height: 200px;
+}
+
+.quote__text {
+  margin: 0;
+  font-size: var(--fs-34);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-heading);
+}
+
+.about__prose { font-size: var(--fs-20); }
+
+/* --- oblasti působení ----------------------------------------------------- */
+
+.areas__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-6);
+}
+
+.area {
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-card);
+  border-radius: var(--radius);
+  padding: var(--s-10);
+}
+
+.area__title {
+  font-size: var(--fs-24);
+  margin-bottom: var(--s-6);
+}
+
+.area__prose { margin-bottom: var(--s-6); }
+
+.area__prose > p + p { margin-top: var(--s-5); }
+
+.media {
+  position: relative;
+  margin: auto 0 0;
+  border-radius: var(--radius-media);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+}
+
+/* Fotografie vyplní rám. Šum musí ležet přes snímek, ne pod ním —
+   `.bmv-noise > *` z tokenů by jinak zvedl `<picture>` nad texturu. */
+.media > picture {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.media > .bmv-noise-layer { z-index: 1; }
+
+.media--top img { object-position: top; }
+.media--bottom img { object-position: bottom; }
+.media--center img { object-position: center 70%; }
+
+/* --- naši společníci ------------------------------------------------------ */
+
+.partners__intro {
+  font-size: var(--fs-20);
+  max-width: 940px;
+  margin-bottom: var(--s-16);
+}
+
+.partner {
+  display: grid;
+  grid-template-columns: minmax(0, 264px) minmax(0, 1fr);
+  gap: clamp(var(--s-8), 5.6vw, var(--s-20));
+  padding-block: var(--s-10);
+  border-top: var(--border-w) solid var(--rule);
+}
+
+.partner:last-child { border-bottom: var(--border-w) solid var(--rule); }
+
+.partner__name {
+  font-size: var(--fs-32);
+  padding-bottom: var(--s-8);
+  border-bottom: var(--border-w) solid var(--rule);
+  align-self: start;
+}
+
+.partner__body { max-width: 656px; }
+
+.partner__lead {
+  font-size: var(--fs-20);
+  line-height: var(--lh-lead);
+  margin-bottom: var(--s-10);
+}
+
+.partner__prose {
+  color: var(--text-secondary);
+  line-height: var(--lh-lead);
+}
+
+.partner__prose p + p { margin-top: var(--s-6); }
+
+.mark { color: var(--text-primary); }
+
+/* --- společná strategie --------------------------------------------------- */
+
+.strategy {
+  background: var(--surface-dark);
+  color: var(--text-on-dark);
+}
+
+.strategy__title {
+  font-size: var(--fs-32);
+  margin-bottom: var(--s-20);
+}
+
+.strategy__statement {
+  font-size: var(--fs-42);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-heading);
+  text-align: center;
+  max-width: 720px;
+  margin-inline: auto;
+  margin-bottom: var(--s-16);
+}
+
+.strategy__statement .line { display: block; }
+
+.strategy__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 344px));
+  justify-content: center;
+  gap: var(--s-16);
+  color: var(--text-on-dark-muted);
+  line-height: var(--lh-lead);
+}
+
+/* --- patička -------------------------------------------------------------- */
+
+.site-footer {
+  background: var(--rule);
+  padding-block: var(--section-y) var(--s-12);
+}
+
+.site-footer__cols {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--gutter);
+  align-items: start;
+}
+
+.site-footer__brand img { width: 198px; height: auto; }
+
+.site-footer__address {
+  font-style: normal;
+  line-height: var(--lh-lead);
+}
+
+.site-footer__ico {
+  font-family: var(--font-mono);
+  font-size: var(--fs-14);
+  letter-spacing: var(--tracking-mono);
+  margin-bottom: var(--s-6);
+}
+
+.site-footer__note {
+  /* --muted na --rule má 3,92 : 1, pod AA. Primární zelená je v paletě
+     a na patičce dává 7,28 : 1. */
+  color: var(--text-primary);
+  font-size: var(--fs-14);
+  line-height: var(--lh-mono);
+}
+
+.rule--footer {
+  background: var(--footer-rule);
+  margin-block: var(--s-16);
+}
+
+.site-footer .eyebrow,
+.site-footer__copy {
+  color: var(--text-primary);
+}
+
+.site-footer__copy {
+  font-family: var(--font-mono);
+  font-size: var(--fs-12);
+  line-height: var(--lh-mono);
+  letter-spacing: var(--tracking-mono);
+  text-transform: uppercase;
+}
+
+/* --- mezistupeň ----------------------------------------------------------- */
+
+/* Mezi 769 a 1100 px se dvousloupcové mřížky ještě udrží, jen se jim ubere
+   vzduch — pevné šířky odměřené na 1440 px by jinak sloupce přetlačily. */
+@media (max-width: 1100px) {
+  .hero__top { gap: var(--s-10); }
+  .hero__title { max-width: none; }
+  .hero__lead { padding-top: var(--s-12); }
+  .hero__theses { gap: var(--s-8); }
+  .strategy__cols { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* --- mobil ---------------------------------------------------------------- */
+
+/* Zlom 768 px přebírám z dodaného referenčního exportu, stejně jako všechny
+   hodnoty uvnitř — jde o doslovný přepis rámce „01 — celá stránka, 390 px". */
+@media (max-width: 768px) {
+  :root {
+    --section-y: 40px;
+    --header-h: 64px;
+  }
+
+  .site-nav { display: none; }
+  .menu-button { display: flex; }
+
+  .site-header__logo img { width: 131px; }
+
+  .hero { padding-top: var(--s-10); }
+  .hero__mark { display: none; }
+
+  .hero__top {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-6);
+  }
+
+  .hero__title { font-size: var(--fs-30); }
+  .hero__lead { padding-top: 0; }
+
+  .hero__theses {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+
+  .hero__theses p { padding-block: var(--s-4); }
+  .hero__theses p + p { border-top: var(--border-w) solid var(--rule); }
+
+  .about__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-8);
+  }
+
+  .areas__grid { grid-template-columns: minmax(0, 1fr); }
+
+  /* Na mobilu jsou fotky na šířku 3 : 2, ne 16 : 9. */
+  .media { aspect-ratio: 3 / 2; }
+
+  .partner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-6);
+  }
+
+  .strategy__statement {
+    font-size: var(--fs-24);
+    text-align: left;
+    max-width: none;
+  }
+
+  .strategy__cols {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-6);
+    justify-content: stretch;
+  }
+
+  .site-footer__cols {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--s-8);
+  }
+}

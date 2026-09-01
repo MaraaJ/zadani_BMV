@@ -1,0 +1,112 @@
+/* ==========================================================================
+   BMV strategy — pohyb
+   --------------------------------------------------------------------------
+   Design systém popisuje značku jako „téměř statickou — je to sazba, ne
+   aplikace" a jmenovitě zakazuje parallax, bounce a animované gradienty.
+   Pohyb tady proto dodržuje tři pravidla:
+
+     1. Statický snímek stránky odpovídá předloze. Animuje se výhradně
+        `opacity` a `transform`, nikdy barva plochy, tvar ani typografie.
+     2. Křivka je kriticky tlumená — nic nikdy nepřestřelí.
+     3. Celý soubor je uvnitř `prefers-reduced-motion: no-preference`.
+        Při vypnutém pohybu zůstává obsah rovnou v koncovém stavu.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+
+  html { scroll-behavior: smooth; }
+
+  /* Kriticky tlumený náběh: rychlý start, měkké dosednutí, žádný přestřel.
+     Odpovídá pružině s tlumením 1,0 a odezvou zhruba 0,45 s. */
+  :root { --ease-settle: cubic-bezier(.32, .72, 0, 1); }
+
+  /* --- odhalování obsahu při scrollu -------------------------------------- */
+
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(20px);
+    will-change: opacity, transform;
+  }
+
+  [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity .45s var(--ease-settle) var(--d, 0ms),
+      transform .45s var(--ease-settle) var(--d, 0ms);
+  }
+
+  /* Po dojetí animace už není co skládat. */
+  [data-reveal].is-settled { will-change: auto; }
+
+  /* --- moment 1: rozsvěcující se zvýrazněné pasáže ------------------------ */
+
+  /* Zvýrazněná pasáž startuje v barvě okolního textu a při čtení přechází
+     do --green. Barevný přechod 200 ms design systém výslovně povoluje. */
+  .js .partner__prose .mark {
+    color: var(--text-secondary);
+    transition: color .2s ease;
+  }
+
+  .js .partner__lead .mark {
+    color: color-mix(in srgb, var(--green) 55%, var(--bg));
+    transition: color .2s ease;
+  }
+
+  .js .mark.is-lit { color: var(--text-primary); }
+
+  /* --- moment 2: scrollem odhalované prohlášení --------------------------- */
+
+  /* Řádky prohlášení v tmavém pásu se neodhalují podle času, ale podle pozice
+     scrollu — čtenář je vytahuje sám. Mění se pouze průhlednost. */
+  .strategy__statement .line { opacity: .22; }
+
+  .js .strategy__statement .line.is-lit {
+    opacity: 1;
+    transition: opacity .35s var(--ease-settle);
+  }
+
+  @supports (animation-timeline: view()) {
+    .strategy__statement .line {
+      animation: line-in linear both;
+      animation-timeline: view();
+      animation-range: entry 62% cover 46%;
+    }
+
+    .strategy__statement .line:nth-child(2) { animation-range: entry 68% cover 50%; }
+    .strategy__statement .line:nth-child(3) { animation-range: entry 74% cover 54%; }
+    .strategy__statement .line:nth-child(4) { animation-range: entry 80% cover 58%; }
+    .strategy__statement .line:nth-child(5) { animation-range: entry 86% cover 62%; }
+
+    /* Nativní časová osa si vystačí sama — třídu z JS pak neřešíme. */
+    .js .strategy__statement .line.is-lit { transition: none; }
+  }
+
+  @keyframes line-in {
+    from { opacity: .22; }
+    to { opacity: 1; }
+  }
+
+  /* --- mobilní menu -------------------------------------------------------- */
+
+  .mobile-menu__list a {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  .mobile-menu.is-open .mobile-menu__list a {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity .35s var(--ease-settle) var(--d, 0ms),
+      transform .35s var(--ease-settle) var(--d, 0ms);
+  }
+}
+
+/* Bez skriptu se nesmí nic schovat — obsah musí být čitelný vždy. */
+html:not(.js) [data-reveal],
+html:not(.js) .mobile-menu__list a,
+html:not(.js) .strategy__statement .line {
+  opacity: 1;
+  transform: none;
+}

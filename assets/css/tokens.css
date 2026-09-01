@@ -1,0 +1,122 @@
+/* ==========================================================================
+   BMV strategy — design tokeny
+   --------------------------------------------------------------------------
+   Doslovné převzetí souborů z
+   „BMV strategy/02 Kód – reference/design-system/tokens/",
+   spojených v pořadí, v jakém je importuje původní styles.css:
+
+       fonts · colors · typography · spacing · shape · texture · base
+
+   Jediná provedená změna jsou relativní cesty k fontům a k noise.png —
+   původní `../assets/` v dodané složce neexistuje. Žádná hodnota nebyla
+   přepsána, přidána ani odebrána.
+   ========================================================================== */
+
+/* --- tokens/fonts.css ---------------------------------------------------- */
+
+/* Geist — jedna sada latin + latin-ext. Dodané subsety z „05 Fonty“ češtinu
+   rozdělovaly do dvou souborů přes unicode-range; Safari u variabilního písma
+   druhý soubor nenasadí a ů/č/ř/š/ž padají do system-ui. Geist Mono v dodávce
+   latin-ext vůbec neměl (PŮSOBENÍ). Glyfy jsou z oficiálního Geist VF, hostované
+   lokálně, bez CDN. */
+@font-face{font-family:'Geist';src:url('../fonts/geist-400-900.woff2') format('woff2');font-weight:400 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url('../fonts/geist-mono.woff2') format('woff2');font-weight:400 700;font-style:normal;font-display:swap}
+:root{--font-sans:'Geist','Inter',system-ui,sans-serif;--font-mono:'Geist Mono',ui-monospace,monospace}
+
+/* --- tokens/colors.css --------------------------------------------------- */
+
+/* Závazná paleta. Nikdy jiné barvy, nikdy gradient. */
+:root{
+--bg:#F4E1D0;
+--green:#1D453E;
+--green-d:#14312C;
+--white:#FFFFFF;
+--muted:#73635B;
+--rule:#E4D2C9;
+
+/* semantické aliasy */
+--surface-page:var(--bg);
+--surface-card:var(--white);
+--surface-dark:var(--green-d);
+--surface-primary:var(--green);
+--text-primary:var(--green);
+--text-secondary:var(--muted);
+--text-on-dark:var(--bg);
+--text-on-dark-muted:#B9A99B;
+--border-rule:var(--rule);
+--border-on-dark:rgba(244,225,208,.18);
+--link:var(--green);
+--link-hover:var(--green-d);
+--link-on-dark:var(--bg);
+}
+
+/* --- tokens/typography.css ----------------------------------------------- */
+
+/* Stupnice: 12 14 16 20 24 30 32 34 42 48. Nadpisy vždy 400. */
+:root{
+--fs-12:12px;--fs-14:14px;--fs-16:16px;--fs-20:20px;--fs-24:24px;
+--fs-30:30px;--fs-32:32px;--fs-34:34px;--fs-42:42px;--fs-48:48px;
+
+--w-regular:400; /* @kind font */
+--w-logo:600; /* @kind font */
+
+/* hlavní nadpis 48/1,2 */
+--lh-tight:1.2; /* @kind font */
+--lh-heading:1.25; /* @kind font */
+/* perex */
+--lh-lead:1.7; /* @kind font */
+--lh-body:1.6; /* @kind font */
+--lh-mono:1.4; /* @kind font */
+
+--tracking-mono:.08em;
+--tracking-heading:-0.01em;
+
+--measure-lead:520px;   /* max. šířka perexu */
+--measure-body:640px;
+}
+
+/* --- tokens/spacing.css -------------------------------------------------- */
+
+/* base 4 px */
+:root{
+--s-1:4px;--s-2:8px;--s-3:12px;--s-4:16px;--s-5:20px;--s-6:24px;
+--s-8:32px;--s-10:40px;--s-12:48px;--s-16:64px;--s-20:80px;--s-24:96px;--s-30:120px;--s-40:160px;
+--content:1512px;
+--gutter:clamp(20px,4.2vw,64px); /* @kind spacing */
+--section-y:clamp(64px,7vw,120px); /* @kind spacing */
+}
+
+/* --- tokens/shape.css ---------------------------------------------------- */
+
+/* radius 32 na plochách, 39 na pilulkách. Nikdy ostré rohy, nikdy stíny. */
+:root{
+--radius:32px;
+--radius-pill:39px;
+--radius-media:32px;
+--border-w:1px;
+--logo-min-width:120px;
+--logo-clearance:.5em; /* polovina výšky versálky */
+}
+
+/* --- tokens/texture.css -------------------------------------------------- */
+
+/* Šum — podpis rodiny. Originální assets/noise.png z repa skupiny KUMO.
+   Vždy 126×126 px při opacity 0,5, jako samostatná vrstva (nikoliv pseudo-element,
+   ten se nevykresluje v náhledech a exportech). */
+:root{--noise-url:url('../img/noise.png'); /* @kind other */ --noise-size:126px; /* @kind spacing */ --noise-opacity:.5 /* @kind other */}
+.bmv-noise{position:relative;isolation:isolate}
+.bmv-noise-layer{position:absolute;inset:0;background-image:var(--noise-url);background-size:var(--noise-size) var(--noise-size);background-repeat:repeat;opacity:var(--noise-opacity);pointer-events:none;border-radius:inherit;z-index:0}
+.bmv-noise>*{position:relative;z-index:1}
+
+/* --- tokens/base.css ----------------------------------------------------- */
+
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{margin:0;background:var(--surface-page);color:var(--text-primary);font-family:var(--font-sans);font-weight:var(--w-regular);font-size:var(--fs-16);line-height:var(--lh-body)}
+h1,h2,h3,h4,h5,h6{font-weight:var(--w-regular);letter-spacing:var(--tracking-heading);line-height:var(--lh-heading);margin:0}
+h1{font-size:var(--fs-48);line-height:var(--lh-tight)}
+h2{font-size:var(--fs-34)}
+h3{font-size:var(--fs-24)}
+p{margin:0;text-wrap:pretty}
+a{color:var(--link);text-decoration:underline;text-underline-offset:.22em;text-decoration-thickness:1px;text-decoration-color:var(--rule);transition:text-decoration-color .2s ease,color .2s ease}
+a:hover{color:var(--link-hover);text-decoration-color:currentColor}
+::selection{background:var(--green);color:var(--bg)}

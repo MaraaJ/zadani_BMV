@@ -1,0 +1,19 @@
+{
+  "name": "bmv-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Vývojářské nástroje k webu BMV strategy. Nejsou součástí odevzdaného webu.",
+  "scripts": {
+    "images": "node build-images.mjs",
+    "og": "node make-og.mjs",
+    "nbsp": "node nbsp.mjs",
+    "build": "node build-images.mjs && node make-og.mjs"
+  },
+  "dependencies": {
+    "sharp": "^0.34.4"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.9.0"
+  }
+}
